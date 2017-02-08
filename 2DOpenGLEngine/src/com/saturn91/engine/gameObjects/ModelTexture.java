@@ -1,6 +1,6 @@
-package com.saturn91.engine.game.renderer;
+package com.saturn91.engine.gameObjects;
 
-public class ModelTexture {
+class ModelTexture {
 	private int textureID;
 	
 	public ModelTexture(int id){

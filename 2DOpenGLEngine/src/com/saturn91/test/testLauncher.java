@@ -4,9 +4,8 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import com.saturn91.engine.Engine;
-import com.saturn91.engine.game.light.Light;
-import com.saturn91.engine.game.renderer.Camera;
 import com.saturn91.engine.gameObjects.GameObject;
+import com.saturn91.engine.gameObjects.Light;
 import com.saturn91.engine.gameObjects.TileSet;
 import com.saturn91.engine.logger.Log;
 
@@ -25,7 +24,7 @@ public class testLauncher {
 
 			@Override
 			public void initGame() {
-				tileset = new TileSet("standartTileset", "Graphics/TestTileSet", 32, 32);		
+				tileset = new TileSet("standartTileset", "./res/Graphics/TestTileSet", 32, 32);		
 				object = tileset.getTile(0, 0, new Vector2f(0.5f,0.5f), 1, 0);
 				addGameObject(object);
 				setEnvironmentLight(new Vector3f(0, 0, 0));

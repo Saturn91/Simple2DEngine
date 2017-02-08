@@ -4,7 +4,7 @@
  * 1 = Texturechords
  */
 
-package com.saturn91.engine.game.renderer;
+package com.saturn91.engine.gameObjects;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,7 +22,7 @@ import org.lwjgl.opengl.GL30;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
-public class Loader {
+class Loader {
 	
 	private static List<Integer> vaos = new ArrayList<>();
 	private static List<Integer> vbos = new ArrayList<>();
@@ -40,12 +40,12 @@ public class Loader {
 	public int loadTexture(String filePath){
 		Texture texture = null;
 		try {
-			texture = TextureLoader.getTexture("PNG", new FileInputStream("res/"+filePath + ".png"));
+			texture = TextureLoader.getTexture("PNG", new FileInputStream(filePath + ".png"));
 		} catch (FileNotFoundException e) {
-			System.err.println("Loader: not able to load: " + "res/"+filePath + ".png");
+			System.err.println("Loader: not able to load: " + filePath + ".png");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("Loader: not able to load: " + "res/"+filePath + ".png");
+			System.err.println("Loader: not able to load: " + filePath + ".png");
 			e.printStackTrace();
 		}
 		int textureID = texture.getTextureID();
@@ -53,7 +53,7 @@ public class Loader {
 		return textureID;
 	}
 	
-	public static void cleanUp(){
+	static void cleanUp(){
 		for(int vao: vaos){
 			GL30.glDeleteVertexArrays(vao);
 		}

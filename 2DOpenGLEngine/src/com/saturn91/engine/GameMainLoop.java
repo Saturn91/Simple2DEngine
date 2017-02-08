@@ -2,10 +2,9 @@ package com.saturn91.engine;
 
 import org.lwjgl.opengl.Display;
 
-import com.saturn91.engine.game.Game;
-import com.saturn91.engine.game.light.Light;
 import com.saturn91.engine.gameObjects.Animation;
 import com.saturn91.engine.gameObjects.GameObject;
+import com.saturn91.engine.gameObjects.Light;
 import com.saturn91.engine.logger.Log;
 
 abstract class GameMainLoop {
@@ -34,7 +33,7 @@ abstract class GameMainLoop {
 		display.closeDisplay();		
 	}
 	
-	public void gameLoop(){
+	private void gameLoop(){
 		while(!Display.isCloseRequested()){
 			update(getTick());
 			game.update(delta);

@@ -3,12 +3,9 @@ package com.saturn91.engine;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import com.saturn91.engine.game.Game;
-import com.saturn91.engine.game.light.Light;
-import com.saturn91.engine.game.light.LightEngine;
-import com.saturn91.engine.game.renderer.Camera;
 import com.saturn91.engine.gameObjects.Animation;
 import com.saturn91.engine.gameObjects.GameObject;
+import com.saturn91.engine.gameObjects.Light;
 
 public abstract class Engine implements Runnable{
 	

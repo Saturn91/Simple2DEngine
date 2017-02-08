@@ -1,4 +1,4 @@
-package com.saturn91.engine.game;
+package com.saturn91.engine;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.saturn91.engine.game.renderer;
+package com.saturn91.engine;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -8,11 +8,11 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 
-import com.saturn91.engine.game.shader.StaticShader;
 import com.saturn91.engine.gameObjects.GameObject;
-import com.saturn91.engine.util.Maths;
+import com.saturn91.engine.gameObjects.RawModel;
+import com.saturn91.engine.gameObjects.TexturedModel;
 
-public class Renderer {
+class Renderer {
 	
 	private static final float FOV = 70;			//Field of view
 	private static final float NEAR_PLANE = 0.1f;	//View nearest distance
@@ -22,7 +22,7 @@ public class Renderer {
 	
 	private Matrix4f projectionMatrix;
 	
-	public Renderer(StaticShader shader) {
+	Renderer(StaticShader shader) {
 		createProjectionMatrix();
 		
 		//didn't get why i need the shader here...
@@ -72,8 +72,8 @@ public class Renderer {
 		projectionMatrix.m33 = 0;
 	}
 	
-	public void setZoom(float zoom){
-		this.zoom = zoom;
+	public void setZoom(float _zoom){
+		zoom = _zoom;
 	}
 	
 	public static float getZoom(){

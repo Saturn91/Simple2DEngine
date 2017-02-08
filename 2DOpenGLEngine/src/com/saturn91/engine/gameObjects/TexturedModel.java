@@ -1,11 +1,11 @@
-package com.saturn91.engine.game.renderer;
+package com.saturn91.engine.gameObjects;
 
 public class TexturedModel {
 	
 	private RawModel rawModel;
 	private ModelTexture texture;
 	
-	public TexturedModel(RawModel rawModel, ModelTexture texture) {
+	TexturedModel(RawModel rawModel, ModelTexture texture) {
 		this.rawModel = rawModel;
 		this.texture = texture;
 	}

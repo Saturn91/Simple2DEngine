@@ -1,4 +1,4 @@
-package com.saturn91.engine.game;
+package com.saturn91.engine;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -6,16 +6,12 @@ import java.util.Random;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import com.saturn91.engine.game.light.Light;
-import com.saturn91.engine.game.light.LightEngine;
-import com.saturn91.engine.game.renderer.Camera;
-import com.saturn91.engine.game.renderer.Renderer;
-import com.saturn91.engine.game.shader.StaticShader;
 import com.saturn91.engine.gameObjects.Animation;
 import com.saturn91.engine.gameObjects.GameObject;
+import com.saturn91.engine.gameObjects.Light;
 
 
-public class Game {
+class Game {
 	
 	private static ArrayList<GameObject> gameObjects;
 	private static ArrayList<Animation> animations;
@@ -26,7 +22,7 @@ public class Game {
 	private static Light cameralight = new Light(new Vector2f(0,0), new Vector3f(1f, 1.0f, 1.0f));
 	private static Vector3f environmentLight = new Vector3f(0.05f,0.02f,0.05f);
 	
-	public Game() {
+	Game() {
 		init();
 	}
 	
@@ -66,32 +62,28 @@ public class Game {
 		
 	}
 	
-	public static void addGameObject(GameObject gameObject){
+	static void addGameObject(GameObject gameObject){
 		gameObjects.add(gameObject);
 	}
 	
-	public static void deleteGameObject(GameObject gameObject){
+	static void deleteGameObject(GameObject gameObject){
 		gameObjects.remove(gameObject);
 	}
 	
-	public static void deleteGameObjectsAll(){
+	static void deleteGameObjectsAll(){
 		gameObjects.clear();
 	}
 	
-	public static void addAnimation(Animation animation){
+	static void addAnimation(Animation animation){
 		animations.add(animation);
 	}
 	
-	public static void deleteAnimation(Animation animation){
+	static void deleteAnimation(Animation animation){
 		animations.remove(animation);
 	}
 	
-	public static void deleteAnimationsAll(){
+	static void deleteAnimationsAll(){
 		animations.clear();
-	}
-	
-	public static void setCameraPosition(){
-		
 	}
 	
 	/**
@@ -110,11 +102,11 @@ public class Game {
 		LightEngine.init(25);
 	}		
 
-	public static void setEnvironmentLight(Vector3f _environmentLight) {
+	static void setEnvironmentLight(Vector3f _environmentLight) {
 		shader.setEnviromentLight(_environmentLight);;
 	}
 
-	public static void setCameralight(Light _cameralight) {
+	static void setCameralight(Light _cameralight) {
 		shader.configureCameraLight(_cameralight);
 	}
 }

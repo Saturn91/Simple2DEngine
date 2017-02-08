@@ -1,7 +1,5 @@
 package com.saturn91.engine.gameObjects;
 
-import com.saturn91.engine.game.renderer.TexturedModel;
-
 public class Entity {
 	private TexturedModel model;
 	
