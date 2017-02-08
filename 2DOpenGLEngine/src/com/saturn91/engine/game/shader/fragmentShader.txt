@@ -1,0 +1,119 @@
+#version 400 core
+
+in vec2 pass_textureCoords; //same name as the out in vertexShader!!
+in vec3 pass_position;
+
+out vec4 out_Colour;
+
+uniform sampler2D textureSampler;	//is per default on Texture 0 -> see also renderer 
+
+
+uniform vec3 enviromentLight;
+
+
+//screen Informations
+uniform float screenFormat;
+
+//*****************************************general Light*********************************
+vec3 getPixelLight(vec3 pixelColor, float pixelDistance, float pixelRange, float pixelStrenght){
+	return vec3(pixelColor*(1/(pixelDistance+0.75)-1/(pixelRange)) * pixelStrenght);
+}
+
+
+//*****************************************Camera Light *********************************
+uniform vec2 cameraLightPosition;
+uniform vec3 cameraLightColor;
+uniform float cameraLightStrenght;
+uniform float cameraLightrange;
+
+vec3 calculateCameraLight(){
+	//calculate Distance
+	
+	float distanceX = cameraLightPosition.x - pass_position.x;
+	float distanceY = (cameraLightPosition.y - pass_position.y) * screenFormat;
+	vec2 distance = vec2(distanceX, distanceY);
+	
+	float distanceXY = length(distance);
+	
+	//calculate light
+	vec3 cameraLightResult = getPixelLight(cameraLightColor, distanceXY, cameraLightrange, cameraLightStrenght);
+	
+	//range correction
+	if(cameraLightResult.x < 0){
+		cameraLightResult.x = 0;
+		cameraLightResult.y = 0;
+		cameraLightResult.z = 0;
+	}
+	
+	//Black Dot correction
+	if(distanceXY < 0.1){
+		cameraLightResult = cameraLightColor*3;
+	}
+	vec3 light_3f;
+	
+	light_3f.x = cameraLightResult.x;
+	light_3f.y = cameraLightResult.y;
+	light_3f.z = cameraLightResult.z;
+	
+	return light_3f;
+}
+
+//************************************************/Camera**********************************************
+
+//************************************************Point Lights Array***********************************
+
+// array of lights
+#define MAX_LIGHTS 10
+uniform int numLights;
+uniform struct Light {
+   vec3 position;
+   vec3 color; 
+   float strenght;
+   float range;
+} allLights[MAX_LIGHTS];
+
+in mat4 pass_view_projection;
+
+vec3 calculatePointLights(){
+	vec3 function_output;
+	float distanceX;
+	float distanceY;
+	for(int i = 0; i < MAX_LIGHTS; i++){
+	
+		Light light = allLights[i];
+		
+		vec4 position = pass_view_projection * vec4(light.position.x, light.position.y, 1, 1);
+		distanceX = position.x - pass_position.x;
+		distanceY = (position.y - pass_position.y) * screenFormat;
+		float distance = length(vec2(distanceX, distanceY));
+		vec3 lightResult = getPixelLight(light.color, distance, light.range, light.strenght);
+		
+		if(lightResult.x < 0){
+			lightResult.x = 0;
+			lightResult.y = 0;
+			lightResult.z = 0;
+		}
+	
+		if(distance < 0.1){
+			lightResult = light.color*3;
+		}
+		
+		if(length(lightResult)>0){
+			function_output += lightResult;
+		}
+	}
+	return function_output;
+}
+
+void main(void){
+
+	//calculate pixel color on screen
+	vec3 finalLight = (calculateCameraLight() + enviromentLight + calculatePointLights());
+	vec4 textureColor = texture(textureSampler, pass_textureCoords);
+	out_Colour = textureColor * vec4(finalLight, 1);
+	
+	if(textureColor.a < 0.5){
+		discard;
+	}
+}
+
