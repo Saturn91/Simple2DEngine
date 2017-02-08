@@ -1,5 +1,6 @@
 package com.saturn91.engine;
 
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import com.saturn91.engine.game.Game;
@@ -9,43 +10,45 @@ import com.saturn91.engine.game.renderer.Camera;
 import com.saturn91.engine.gameObjects.Animation;
 import com.saturn91.engine.gameObjects.GameObject;
 
-public abstract class Engine {
+public abstract class Engine implements Runnable{
+	
 	private GameMainLoop gameLoop;	
 	private static int windowWidth;
 	private static int windowHeight;
+	private static String windowTitle;
+	private static int fps = 60;
 	
-	public Engine(int width, int height, String screenTitle) {
-		windowWidth = width;
-		windowHeight = height;
-		gameLoop = new GameMainLoop(width, height, screenTitle){
+	public void run() {
+		gameLoop = new GameMainLoop(windowWidth, windowHeight, windowTitle, fps){
 			@Override
 			public void update(long delta) {
-				updateGame();
+				updateGame(delta);
 			}
 
 			@Override
 			public void init() {
 				initGame();				
+			}
+
+			@Override
+			public void onClose() {
+				closeThread();				
 			}
 		};
 		startGame();
 	}
-
-	public Engine(int width, int height, String screenTitle, int fps) {
+	
+	public Engine(int width, int height, String screenTitle) {
 		windowWidth = width;
-		windowHeight = height;
-		gameLoop = new GameMainLoop(width, height, screenTitle, fps){
-			@Override
-			public void update(long delta) {
-				updateGame();				
-			}
+		windowHeight = height;	
+		windowTitle = screenTitle;
+	}
 
-			@Override
-			public void init() {
-				initGame();				
-			}			
-		};
-		startGame();
+	public Engine(int width, int height, String screenTitle, int _fps) {
+		windowWidth = width;
+		windowHeight = height;	
+		windowTitle = screenTitle;
+		fps = _fps;
 	}	
 	
 	private void startGame(){
@@ -61,7 +64,7 @@ public abstract class Engine {
 		return windowHeight;
 	}
 
-	public abstract void updateGame();	
+	public abstract void updateGame(long delta);	
 
 	public abstract void initGame();
 	
@@ -112,4 +115,11 @@ public abstract class Engine {
 	public void cameraBindTo(GameObject object){
 		Camera.bindTo(object);
 	}
+	
+	public void setCameraPosition(Vector2f position){
+		Camera.getPosition2D().x = position.x;
+		Camera.getPosition2D().y = position.y;
+	}
+	
+	public abstract void closeThread();
 }
