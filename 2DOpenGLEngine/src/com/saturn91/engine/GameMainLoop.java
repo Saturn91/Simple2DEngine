@@ -24,25 +24,17 @@ abstract class GameMainLoop {
 		this.windowWidth = width;
 		this.windowHeight = height;
 		this.fps = fps;
-	}
-	
-	GameMainLoop(int width, int height, String screenTitle){
-		this.screenTitle = screenTitle;
-		this.windowWidth = width;
-		this.windowHeight = height;
-		this.fps = 60;
-	}
-	
+	}	
 	
 	public void start(){
 		display = new DisplayManager(windowWidth, windowHeight, screenTitle, fps);
 		game = new Game();
 		init();
-		GameLoop();
+		gameLoop();
 		display.closeDisplay();		
 	}
 	
-	public void GameLoop(){
+	public void gameLoop(){
 		while(!Display.isCloseRequested()){
 			update(getTick());
 			game.update(delta);
@@ -83,6 +75,8 @@ abstract class GameMainLoop {
 	public abstract void init();
 
 	public void close(){
-		
+		onClose();
 	}
+	
+	public abstract void onClose();
 }

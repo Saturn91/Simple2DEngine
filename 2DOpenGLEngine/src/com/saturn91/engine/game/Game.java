@@ -90,6 +90,10 @@ public class Game {
 		animations.clear();
 	}
 	
+	public static void setCameraPosition(){
+		
+	}
+	
 	/**
 	 * build Game
 	 */
