@@ -1,4 +1,4 @@
-package com.saturn91.engine.game.light;
+package com.saturn91.engine.gameObjects;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;

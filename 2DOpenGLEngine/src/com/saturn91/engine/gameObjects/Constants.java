@@ -1,8 +1,8 @@
-package com.saturn91.engine.util;
+package com.saturn91.engine.gameObjects;
 
 public class Constants {
 	
-	public static float[] QuadVerticies(float width, float height){
+	static float[] QuadVerticies(float width, float height){
 		float output[] = {
 		-0.5f*width,0.5f*height,0f,		//TopLeft	
 		-0.5f*width,-0.5f*height,0f,	//DownLeft
@@ -11,7 +11,7 @@ public class Constants {
 		return output;
 	}
 	
-	public static float[] TextureCords(){
+	static float[] TextureCords(){
 		float output[] = {
 			0,0,
 			0,1,
@@ -20,7 +20,7 @@ public class Constants {
 		return output;
 	}
 	
-	public static int[] QuadIndices(){
+	static int[] QuadIndices(){
 		int[] indices = {
 				0,1,3,	
 				3,1,2

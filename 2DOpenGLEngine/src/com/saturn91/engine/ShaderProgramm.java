@@ -1,4 +1,4 @@
-package com.saturn91.engine.game.shader;
+package com.saturn91.engine;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,16 +12,14 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import com.saturn91.engine.Engine;
-
-public abstract class ShaderProgramm {
+abstract class ShaderProgramm {
 	
 	protected int programmID;
 	private int vertexShaderID;
 	private int fragmentShaderID;
 	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 	
-	public ShaderProgramm(String vertexFile, String fragmentFile){
+	ShaderProgramm(String vertexFile, String fragmentFile){
 		vertexShaderID = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
 		fragmentShaderID = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
 		programmID = GL20.glCreateProgram();

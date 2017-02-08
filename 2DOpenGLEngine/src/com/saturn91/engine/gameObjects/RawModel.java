@@ -1,4 +1,4 @@
-package com.saturn91.engine.game.renderer;
+package com.saturn91.engine.gameObjects;
 
 public class RawModel {
 	private int vaoID;

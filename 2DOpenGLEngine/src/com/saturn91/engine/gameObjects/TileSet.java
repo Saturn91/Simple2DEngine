@@ -8,11 +8,6 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import com.saturn91.engine.game.renderer.Loader;
-import com.saturn91.engine.game.renderer.RawModel;
-import com.saturn91.engine.game.renderer.TexturedModel;
-import com.saturn91.engine.util.Constants;
-
 public class TileSet {
 	private String name;
 	private static ArrayList<String> defindedNames = new ArrayList<>();
@@ -40,11 +35,11 @@ public class TileSet {
 	
 	private int loadImage(String filePath) {
 		try {
-			BufferedImage texturePNG = ImageIO.read(new File("./res/" + filePath + ".png"));
+			BufferedImage texturePNG = ImageIO.read(new File(filePath + ".png"));
 			imgWidth = texturePNG.getWidth();
 			imgHeight = texturePNG.getHeight();			
 		} catch (Exception e) {
-			System.err.println("Tileset: no File <./res/" + filePath + ".png> found");
+			System.err.println("Tileset: no File <" + filePath + ".png> found");
 		}
 		return loader.loadTexture(filePath);	
 	}
