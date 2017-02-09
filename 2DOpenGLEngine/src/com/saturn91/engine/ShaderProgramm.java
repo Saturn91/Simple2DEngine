@@ -2,6 +2,8 @@ package com.saturn91.engine;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -29,7 +31,18 @@ abstract class ShaderProgramm {
 		GL20.glLinkProgram(programmID);
 		GL20.glValidateProgram(programmID);
 		getAllUniformLocations();
-		
+	}
+	
+	ShaderProgramm(InputStream vertexFile, InputStream fragmentFile){
+		vertexShaderID = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
+		fragmentShaderID = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
+		programmID = GL20.glCreateProgram();
+		GL20.glAttachShader(programmID, vertexShaderID);
+		GL20.glAttachShader(programmID, fragmentShaderID);
+		bindAttributes();
+		GL20.glLinkProgram(programmID);
+		GL20.glValidateProgram(programmID);
+		getAllUniformLocations();
 	}
 	
 	protected abstract void getAllUniformLocations();
@@ -60,7 +73,7 @@ abstract class ShaderProgramm {
 	}
 	
 	public void setScreenFormat(){
-		float format = (float) Engine.getWindowWidth()/ (float) Engine.getWindowHeight();
+		float format = (float) Engine.getWindowHeight()/ (float) Engine.getWindowWidth();
 		setShaderVariablef("screenFormat", format);
 	}
 	
@@ -126,6 +139,31 @@ abstract class ShaderProgramm {
 		if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE){
 			System.out.println(GL20.glGetShaderInfoLog(shaderID, 500));
 			System.err.println("ShaderProgramm: Could not compile shader: <" + file + ">");
+		}
+		return shaderID;
+	}
+	
+	private static int loadShader(InputStream input, int type){
+		StringBuilder shaderSource = new StringBuilder();
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+			String line;
+			while((line = reader.readLine())!= null){
+				shaderSource.append(line).append("\n");
+			}
+			reader.close();
+		} catch (Exception e) {
+			System.err.println("ShaderProgramm: Could not find File: shaderFile!");
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		
+		int shaderID = GL20.glCreateShader(type);
+		GL20.glShaderSource(shaderID, shaderSource);
+		GL20.glCompileShader(shaderID);
+		if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE){
+			System.out.println(GL20.glGetShaderInfoLog(shaderID, 500));
+			System.err.println("ShaderProgramm: Could not find File: shaderFile!");
 		}
 		return shaderID;
 	}

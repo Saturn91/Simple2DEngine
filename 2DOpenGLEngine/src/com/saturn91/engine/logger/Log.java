@@ -3,6 +3,17 @@ package com.saturn91.engine.logger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * DebugModus output:
+ * -1: nothing
+ * 0: Normal Runtime Status
+ * 1: Errors that are critical and can stop the Program from running
+ * 2: "Errors" that can happen at runtime 
+ * 3: Status informations Detail 0
+ * 4. Status informations Detail 1
+ * 5. Status informations Detail 2
+ * @author M.Geissbberger
+ */
 public class Log {
 	private static int debugMod;
 	private static int allClassesDebugMode = -1;		//-1 means use normal debugModus
@@ -46,7 +57,7 @@ public class Log {
 	 * @param msg	Status Message
 	 * @param debugMod
 	 */	
-	protected static void printErrorLn(String msg, String className, int _debugMod){
+	public static void printErrorLn(String msg, String className, int _debugMod){
 		String msgLine = "[" + getDate() + "]: " + error + " " + className + ": " + msg;
 		if(allClassesDebugMode == -1){
 			if(printOnlyExact_DebugModus){

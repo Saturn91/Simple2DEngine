@@ -118,5 +118,9 @@ public abstract class Engine implements Runnable{
 		Camera.getPosition2D().y = position.y;
 	}
 	
+	public Light getCameraLight(){
+		return Game.getCameraLight();
+	}
+	
 	public abstract void closeThread();
 }

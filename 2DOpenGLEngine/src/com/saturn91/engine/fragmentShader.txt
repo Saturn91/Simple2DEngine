@@ -47,7 +47,7 @@ vec3 calculateCameraLight(){
 	
 	//Black Dot correction
 	if(distanceXY < 0.1){
-		cameraLightResult = cameraLightColor*3;
+		cameraLightResult = cameraLightColor*5;
 	}
 	vec3 light_3f;
 	
@@ -95,7 +95,7 @@ vec3 calculatePointLights(){
 		}
 	
 		if(distance < 0.1){
-			lightResult = light.color*3;
+			lightResult = light.color*5;
 		}
 		
 		if(length(lightResult)>0){

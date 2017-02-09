@@ -45,7 +45,7 @@ public class TileSet {
 	}
 
 	private boolean checkValues(){
-		float value = imgWidth;
+		
 		boolean error = false;
 		for(int i = 1; i< 11; i++){
 			

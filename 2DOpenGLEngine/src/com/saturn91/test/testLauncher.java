@@ -15,6 +15,8 @@ public class testLauncher {
 
 	public static void main(String[] args) {
 		
+		Log.setDebugModus(1);
+		
 		Engine engine = new Engine(1024, 720, "Test Game", 60){
 			
 			@Override
