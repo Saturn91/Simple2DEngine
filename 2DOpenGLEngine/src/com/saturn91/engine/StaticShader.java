@@ -1,9 +1,10 @@
 package com.saturn91.engine;
 
+import java.io.InputStream;
+
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import com.saturn91.engine.gameObjects.Light;
 
@@ -11,8 +12,7 @@ class StaticShader extends ShaderProgramm{
 	
 	//private static final String VERTEX_FILE = ClassLoader.getSystemResource("./res/shader/vertexShader.txt").getPath();
 	//private static final String FRAGMENT_FILE = ClassLoader.getSystemResource("./res/shader/vertexShader.txt").getPath();
-	private static final String VERTEX_FILE = "./res/shader/vertexShader.txt";
-	private static final String FRAGMENT_FILE = "./res/shader/fragmentShader.txt";
+	
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;
@@ -21,8 +21,12 @@ class StaticShader extends ShaderProgramm{
 	private Vector3f enviromentlight = new Vector3f(0, 0, 0); 
 	private Light lights[] = new Light[0];
 
-	StaticShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
+	StaticShader(String pathToVertexShader, String pathToFragmentShader) {
+		super(pathToVertexShader, pathToFragmentShader);
+	}
+	
+	StaticShader(InputStream pathToVertexShader, InputStream pathToFragmentShader) {
+		super(pathToVertexShader, pathToFragmentShader);
 	}
 
 	@Override
