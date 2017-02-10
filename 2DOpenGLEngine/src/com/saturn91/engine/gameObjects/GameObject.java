@@ -11,7 +11,7 @@ public class GameObject {
 	protected Vector2f position;
 	private float scale;
 	private float renderLayer;
-	private static final float layerDistance = 0.01f;
+	private static final float layerDistance = 0.1f;
 	private int textureID = -999;
 	
 	private String thisName;

@@ -27,7 +27,7 @@ class Game {
 
 	private static ArrayList<GameObject> gameObjects;
 	private static ArrayList<Animation> animations;
-	private Renderer renderer;
+	private static Renderer renderer;
 	private static StaticShader shader;
 	private Camera camera;
 
@@ -100,6 +100,10 @@ class Game {
 	
 	static Light getCameraLight(){
 		return cameralight;
+	}
+	
+	static void setZoom(float zoom){
+		renderer.setZoom(zoom);
 	}
 
 	/**

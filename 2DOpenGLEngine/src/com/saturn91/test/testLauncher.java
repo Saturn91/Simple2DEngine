@@ -25,8 +25,8 @@ public class testLauncher {
 			}
 
 			@Override
-			public void initGame() {
-				tileset = new TileSet("standartTileset", "./res/Graphics/TestTileSet", 32, 32);		
+			public void initGame() {	
+				tileset = new TileSet("Standard", "./res/Graphics/TestTileSet", 32, 32, 32);
 				object = tileset.getTile(0, 0, new Vector2f(0.5f,0.5f), 1, 0);
 				addGameObject(object);
 				setEnvironmentLight(new Vector3f(0, 0, 0));
@@ -38,6 +38,11 @@ public class testLauncher {
 
 			@Override
 			public void closeThread() {
+				
+			}
+
+			@Override
+			public void onCreate() {
 							
 			}		
 		};
@@ -51,6 +56,7 @@ public class testLauncher {
 	private static void update(Engine engine, long delta) {
 				
 		object.getPosition().x += (int) delta*0.001f; 
+		engine.setZoom(12);
 		if(init){
 			GameObject object2 = tileset.getTile(0, 1, new Vector2f(0.5f, 0.5f),  1, 1);
 			engine.addGameObject(object2);

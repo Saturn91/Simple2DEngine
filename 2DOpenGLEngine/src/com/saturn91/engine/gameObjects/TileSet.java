@@ -18,12 +18,15 @@ public class TileSet {
 	private int imgHeight;
 	private static Loader loader = new Loader();
 	
-	public TileSet(String name, String filePath, int tileWidth, int tileHeight) {
+	private int normalizedSizeofOne = 32;
+	
+	public TileSet(String name, String filePath, int tileWidth, int tileHeight, int normilizedSize) {
 		if(!defindedNames.contains(name)){
 			this.name = name;
 			defindedNames.add(name);
 			this.tileWidth = tileWidth;
 			this.tileHeight = tileHeight;
+			this.normalizedSizeofOne = normilizedSize;
 			textureID = loadImage(filePath);
 			if(!checkValues()){
 				System.err.println("Tileset: <" + filePath + "> wrong value while loading!");
@@ -55,7 +58,7 @@ public class TileSet {
 			
 			if(imgWidth%(2*i)<1){
 				error = true;
-				System.err.println("Tileset: texturewidth should be 2^n (z.B. 1024");
+				System.err.println("Tileset: texturewidth should be 2^n (i.e. 1024");
 				break;
 			}
 			
@@ -68,14 +71,13 @@ public class TileSet {
 			
 			if(imgHeight%(2*i)<1){
 				error = true;
-				System.err.println("Tileset: textureheight should be 2^n (z.B. 1024");
+				System.err.println("Tileset: textureheight should be 2^n (i.e. 1024");
 				break;
 			}			
 		}
 		
 		if(imgWidth%tileWidth != 0 || imgHeight%tileHeight != 0){
-			System.err.println("Tileset: TextureHeight%TextureWidth should be 0!");
-			System.err.println("Tileset: TextureWidth%TextureWidth should be 0!");
+			System.err.println("Tileset: TextureHeight%TextureWidth should not be 0!");
 			error = true;
 		}
 		
@@ -84,7 +86,9 @@ public class TileSet {
 	
 	public GameObject getTile(int numInX, int numInY, Vector2f position, float scale, int layer){
 		String generatedName = name + numInX + numInY;
-		RawModel model= loader.loadToVAO(Constants.QuadVerticies(1, 1), getTextureChords(numInX, numInY), Constants.QuadIndices());
+		float tileWidth_normalized = (float)tileWidth/ (float) normalizedSizeofOne;
+		float tileHeight_normalized = (float) tileHeight/ (float) normalizedSizeofOne;
+		RawModel model= loader.loadToVAO(Constants.QuadVerticies(tileWidth_normalized, tileHeight_normalized), getTextureChords(numInX, numInY), Constants.QuadIndices());
 		TexturedModel staticModel = new TexturedModel(model, null);
 		Entity entity = new Entity(staticModel);
 		if(!GameObject.checkExisting(generatedName)){

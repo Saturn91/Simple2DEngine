@@ -1,5 +1,7 @@
 package com.saturn91.engine;
 
+import java.nio.ByteBuffer;
+
 import org.lwjgl.opengl.Display;
 
 import com.saturn91.engine.gameObjects.Animation;
@@ -13,6 +15,7 @@ abstract class GameMainLoop {
 	private int windowWidth;
 	private int windowHeight;
 	private int fps;
+	private boolean fullscreen = false;
 	
 	private DisplayManager display;
 	
@@ -23,10 +26,22 @@ abstract class GameMainLoop {
 		this.windowWidth = width;
 		this.windowHeight = height;
 		this.fps = fps;
-	}	
+		fullscreen = false;
+	}
+	
+	GameMainLoop(String screenTitle, int fps){
+		this.screenTitle = screenTitle;
+		this.fps = fps;
+		fullscreen = true;
+	}
 	
 	public void start(){
-		display = new DisplayManager(windowWidth, windowHeight, screenTitle, fps);
+		if(fullscreen){
+			display = new DisplayManager(screenTitle, fps);
+		}else{
+			display = new DisplayManager(windowWidth, windowHeight, screenTitle, fps);
+		}
+		
 		game = new Game();
 		init();
 		gameLoop();
@@ -75,6 +90,10 @@ abstract class GameMainLoop {
 
 	public void close(){
 		onClose();
+	}
+	
+	public void setIcons(ByteBuffer[] list){
+		display.setIcons(list);
 	}
 	
 	public abstract void onClose();
