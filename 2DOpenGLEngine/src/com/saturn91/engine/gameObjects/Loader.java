@@ -22,6 +22,8 @@ import org.lwjgl.opengl.GL30;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
+import com.saturn91.engine.logger.Log;
+
 class Loader {
 	
 	private static List<Integer> vaos = new ArrayList<>();
@@ -42,10 +44,10 @@ class Loader {
 		try {
 			texture = TextureLoader.getTexture("PNG", new FileInputStream(filePath + ".png"));
 		} catch (FileNotFoundException e) {
-			System.err.println("Loader: not able to load: " + filePath + ".png");
+			Log.printErrorLn("Loader: not able to load: " + filePath + ".png", getClass().getName(), 1);
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("Loader: not able to load: " + filePath + ".png");
+			Log.printErrorLn("Loader: not able to load: " + filePath + ".png", getClass().getName(), 1);
 			e.printStackTrace();
 		}
 		int textureID = texture.getTextureID();

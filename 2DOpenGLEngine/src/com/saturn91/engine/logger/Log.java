@@ -99,8 +99,9 @@ public class Log {
 	 * This Method provides every Textoutput with the last printed msg could be used for a log File
 	 * @return
 	 */
-	public static StringBuilder getErrorStrings(){
-		StringBuilder sb2 = sb;
+	public static StringBuilder getDebugStrings(){
+		StringBuilder sb2 = new StringBuilder();
+		sb2.append(sb.toString());
 		sb.setLength(0);
 		return sb2;
 	}
@@ -116,5 +117,13 @@ public class Log {
 	private static String getDate(){
 		Date date = new Date(System.currentTimeMillis());
 		return dateFormat.format(date).toString();
+	}
+	
+	public static int getDebugModus(){
+		if(allClassesDebugMode == -1){
+			return debugMod;
+		}else{
+			return allClassesDebugMode;
+		}
 	}
 }

@@ -16,19 +16,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.saturn91.engine.logger.Log;
+
 
 public class SaveSystem {
 	
 	private StringBuilder buffer;
 	private String path;
-	private String loadpath;
-	private String ending;
 	private String[] loadBuffer;
+	private String loadpath;
 	private boolean testing = false;
 	
-	public SaveSystem(String standartPath, String ending){
-		this.path = standartPath;
-		this.ending = ending;
+	public SaveSystem(){
 		init();
 	}
 
@@ -46,7 +45,7 @@ public class SaveSystem {
 	 */
 	public void addToBuffer(String addString){
 		if(testing){
-			System.out.println("added \"" + addString + "\"");
+			Log.printLn("added \"" + addString + "\"" + addString + "\"", getClass().getName(), 3);
 		}
 		buffer.append(addString);
 	}
@@ -58,29 +57,29 @@ public class SaveSystem {
 	 */
 	public void addBufferLine(String addString){
 		if(testing){
-			System.out.println("added Line \"" + addString + "\"");
+			Log.printLn("added Line \"" + addString + "\"", getClass().getName(), 3);
 		}
 		buffer.append(addString + "\n");
 	}
 	
 	/**
 	 * save the current Buffer to a File "name" with the ending and path decleared in constructor
-	 * @param name
+	 * @param path
 	 */
-	public void save(String name){
+	public void save(String path){
 		String saveData = buffer.toString();
 		if(testing){
-			System.out.println("\n" + "************saving:*******************");
-			System.out.println(saveData);
-			System.out.println("************End of saving ***********" + "\n");
+			Log.printLn("************saving:*******************", getClass().getName(), 3);
+			if(Log.getDebugModus() >= 3) {System.out.println(saveData);}
+			Log.printLn("************End of saving ***********", getClass().getName(), 3);
 		}
 		
 		try {
-			PrintWriter writer = new PrintWriter(path + name+ "." + ending, "UTF-8");
+			PrintWriter writer = new PrintWriter(path, "UTF-8");
 			writer.print(saveData);
 			writer.close();
 		} catch (Exception e) {
-			System.err.println("error while saving " + name + "." + ending);
+			Log.printErrorLn("error while saving" + path, getClass().getName(), 1);
 		}
 				
 		//clear String to get PLace on the Heap:
@@ -114,10 +113,15 @@ public class SaveSystem {
 		String loadString ="";
 		try {
 			loadString = readTextFile();
-			loadBuffer = loadString.split("\n");
+			if(loadString.contains("\n")){
+				loadBuffer = loadString.split("\n");
+			}else{
+				loadBuffer = new String[1];
+				loadBuffer[0] = loadString;
+			}			
 			return true;
 		} catch (IOException e) {
-			System.err.println("coudn't load " + loadpath + "." + ending);
+			Log.printErrorLn("coudn't load " + loadpath, getClass().getName(), 1);
 			return false;
 		}
 	}
@@ -129,7 +133,7 @@ public class SaveSystem {
 	 * @throws IOException
 	 */
 	private String readTextFile() throws FileNotFoundException, IOException{
-		try(BufferedReader br = new BufferedReader(new FileReader(loadpath+ "." +ending))) {
+		try(BufferedReader br = new BufferedReader(new FileReader(loadpath))) {
 		    StringBuilder sb = new StringBuilder();
 		    String line = br.readLine();
 
@@ -172,8 +176,8 @@ public class SaveSystem {
 		try {
 			return loadBuffer[line];
 		} catch (Exception e) {
-			System.err.println("coudn't load Line " + line + " from file ");
-			System.err.println("Max Line of " + loadpath + "." + ending +" = " + (loadBuffer.length-1)+ "!");
+			Log.printErrorLn("coudn't load Line " + line + " from file ", getClass().getName(), 1);
+			Log.printErrorLn("Max Line of " + loadpath +" = " + (loadBuffer.length-1)+ "!", getClass().getName(), 1);
 			return "LOADING ERROR";
 		}
 	}
@@ -189,7 +193,7 @@ public class SaveSystem {
 		for(int i = 0; i < loadBuffer.length; i++){
 			if(loadBuffer[i].startsWith(prefix)){
 				if(testing){
-					System.out.println("found Prefix \"" + prefix + "\" at Line: " + i);
+					Log.printLn("found Prefix \"" + prefix + "\" at Line: " + i, getClass().getName(), 3);
 				}
 				StringBuilder sb = new StringBuilder(); 
 				sb.append(loadBuffer[i].substring(prefix.length()+1));
@@ -200,7 +204,7 @@ public class SaveSystem {
 			}
 		}
 		if(output == null){
-			System.err.println("no prefix: \"" + prefix + "\" exists in File " + loadpath + "." + ending);
+			Log.printErrorLn("no prefix: \"" + prefix + "\" exists in File " + loadpath, getClass().getName(), 1);
 		}
 		return output;
 	}
@@ -216,7 +220,7 @@ public class SaveSystem {
 		for(int i = loadBuffer.length-1; i > -1; i--){
 			if(loadBuffer[i].startsWith(prefix)){
 				if(testing){
-					System.out.println("found Prefix \"" + prefix + "\" at Line: " + i);
+					Log.printLn("found Prefix \"" + prefix + "\" at Line: " + i, getClass().getName(), 3);
 				}
 				StringBuilder sb = new StringBuilder(); 
 				sb.append(loadBuffer[i].substring(prefix.length()));
@@ -227,7 +231,7 @@ public class SaveSystem {
 			}
 		}
 		if(output == null){
-			System.err.println("getLastPrefix(): no prefix: \"" + prefix + "\" exists in File " + loadpath + "." + ending);
+			Log.printErrorLn("getLastPrefix(): no prefix: \"" + prefix + "\" exists in File " + loadpath, getClass().getName(), 1);
 		}
 		return output;
 	}
@@ -244,7 +248,7 @@ public class SaveSystem {
 			list[i] = false;
 			if(loadBuffer[i].startsWith(prefix)){
 				if(testing){
-					System.out.println("found Prefix \"" + prefix + "\" at Line: " + i);
+					Log.printLn("found Prefix \"" + prefix + "\" at Line: " + i, getClass().getName(), 3);
 				}
 				list[i]= true;
 				lenght++;
@@ -290,5 +294,11 @@ public class SaveSystem {
 	 */
 	public void setTesting(boolean testing){
 		this.testing = testing;
+		if(testing){
+			Log.printLn("enabled Testing, to see debug messages: Log.setDebugModus( >= 3)", getClass().getName(), 1);
+		}else{
+			Log.printLn("disabled Testing", getClass().getName(), 1);
+		}
+		
 	}
 }

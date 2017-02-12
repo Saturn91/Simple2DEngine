@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import com.saturn91.engine.logger.Log;
+
 public class GameObject {
 	private static ArrayList<Entity> entities = new ArrayList<>();
 	private static ArrayList<String> knownEntities = new ArrayList<>();
@@ -23,7 +25,7 @@ public class GameObject {
 			this.thisName = entityType;
 			this.renderLayer = layer*layerDistance;
 		}else{
-			System.err.println("GameObject: unknown Entity <" + entityType + ">!");
+			Log.printErrorLn("GameObject: unknown Entity <" + entityType + ">!", GameObject.class.getName(), 1);
 		}
 	}
 	
@@ -35,7 +37,7 @@ public class GameObject {
 			this.renderLayer = layer*layerDistance;
 			this.textureID = textureID;
 		}else{
-			System.err.println("unknown Entity <" + entityType + ">!");
+			Log.printErrorLn("unknown Entity <" + entityType + ">!", getClass().getName(), 1);
 		}
 	}
 	

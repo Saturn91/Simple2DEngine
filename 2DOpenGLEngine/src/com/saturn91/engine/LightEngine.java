@@ -1,6 +1,7 @@
 package com.saturn91.engine;
 
 import com.saturn91.engine.gameObjects.Light;
+import com.saturn91.engine.logger.Log;
 
 class LightEngine {
 	private static Light t_lights[];
@@ -23,7 +24,7 @@ class LightEngine {
 				return i;
 			}
 		}
-		System.out.println("maxNum of Lights is " + t_lights.length + "!");
+		Log.printErrorLn("maxNum of Lights is " + t_lights.length + "!", LightEngine.class.getName(), 1);
 		return -1;
 	}
 	
