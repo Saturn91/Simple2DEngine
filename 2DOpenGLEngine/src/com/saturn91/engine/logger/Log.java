@@ -67,7 +67,7 @@ public class Log {
 				}
 			}else{
 				if(debugMod >= _debugMod){
-					System.err.println(msgLine);
+					System.err.println(_debugMod + "| "+msgLine);
 					sb.append(_debugMod + "| "+msgLine + "\n");
 				}
 			}

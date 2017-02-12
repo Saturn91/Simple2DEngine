@@ -1,11 +1,23 @@
 package com.saturn91.engine;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+import javax.imageio.ImageIO;
+
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.newdawn.slick.opengl.ImageIOImageData;
 
 import com.saturn91.engine.gameObjects.Animation;
 import com.saturn91.engine.gameObjects.GameObject;
 import com.saturn91.engine.gameObjects.Light;
+import com.saturn91.engine.logger.Log;
 
 public abstract class Engine implements Runnable{
 	
@@ -14,31 +26,64 @@ public abstract class Engine implements Runnable{
 	private static int windowHeight;
 	private static String windowTitle;
 	private static int fps = 60;
+	private static boolean fullscreen = false;
 	
 	public void run() {
-		gameLoop = new GameMainLoop(windowWidth, windowHeight, windowTitle, fps){
-			@Override
-			public void update(long delta) {
-				updateGame(delta);
-			}
+		if(!fullscreen){
+			gameLoop = new GameMainLoop(windowWidth, windowHeight, windowTitle, fps){
+				@Override
+				public void update(long delta) {
+					updateGame(delta);
+				}
 
-			@Override
-			public void init() {
-				initGame();				
-			}
+				@Override
+				public void init() {
+					initGame();				
+				}
 
-			@Override
-			public void onClose() {
-				closeThread();				
-			}
-		};
+				@Override
+				public void onClose() {
+					closeThread();				
+				}
+			};
+		}else{
+			gameLoop = new GameMainLoop(windowTitle, fps){
+				@Override
+				public void update(long delta) {
+					updateGame(delta);
+				}
+
+				@Override
+				public void init() {
+					initGame();				
+				}
+
+				@Override
+				public void onClose() {
+					closeThread();				
+				}
+			};
+		}
+		
 		startGame();
+		
 	}
 	
 	public Engine(int width, int height, String screenTitle) {
 		windowWidth = width;
 		windowHeight = height;	
 		windowTitle = screenTitle;
+		fullscreen = false;
+		onCreate();
+	}
+	
+	public Engine(String screenTitle) {
+		windowTitle = screenTitle;
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		windowWidth = (int) screenSize.getWidth();
+		windowWidth = (int) screenSize.getHeight();
+		fullscreen = true;
+		onCreate();
 	}
 
 	public Engine(int width, int height, String screenTitle, int _fps) {
@@ -46,7 +91,19 @@ public abstract class Engine implements Runnable{
 		windowHeight = height;	
 		windowTitle = screenTitle;
 		fps = _fps;
-	}	
+		fullscreen = false;
+		onCreate();
+	}
+	
+	public Engine(String screenTitle, int _fps) {
+		windowTitle = screenTitle;
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		windowWidth = (int) screenSize.getWidth();
+		windowWidth = (int) screenSize.getHeight();
+		fps = _fps;
+		fullscreen = true;
+		onCreate();
+	}
 	
 	private void startGame(){
 		gameLoop.start();
@@ -121,6 +178,40 @@ public abstract class Engine implements Runnable{
 	public Light getCameraLight(){
 		return Game.getCameraLight();
 	}
+	
+	public void setZoom(float zoom){
+		Game.setZoom(zoom);
+	}
+	
+	@Deprecated
+	public void setTaskBarIcon(String pathTo16x16pxIcon, String pathTo32x32pxIcon){
+		try {
+			ByteBuffer[] list = new ByteBuffer[] {
+		        convertImageData(pathTo16x16pxIcon),
+		        convertImageData(pathTo32x32pxIcon)
+		    };
+			gameLoop.setIcons(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.printErrorLn("not able to load Icons", getClass().getName(), 1);
+		}
+	}
+	
+	private ByteBuffer convertImageData(String path) {
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(new File(path));
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+	        ImageIO.write(image, "png", out);
+	        return ByteBuffer.wrap(out.toByteArray()); 
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.printErrorLn("not able to load <" + path + ">", getClass().getName() , 1);
+		}	    
+	    return null;
+	}
+	
+	public abstract void onCreate();
 	
 	public abstract void closeThread();
 }
