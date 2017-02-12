@@ -8,6 +8,8 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import com.saturn91.engine.logger.Log;
+
 public class TileSet {
 	private String name;
 	private static ArrayList<String> defindedNames = new ArrayList<>();
@@ -29,10 +31,10 @@ public class TileSet {
 			this.normalizedSizeofOne = normilizedSize;
 			textureID = loadImage(filePath);
 			if(!checkValues()){
-				System.err.println("Tileset: <" + filePath + "> wrong value while loading!");
+				Log.printErrorLn("Tileset: <" + filePath + "> wrong value while loading!", getClass().getName(), 1);
 			}
 		}else{
-			System.err.println("Tileset: <" + name + "> is already a defined Tileset!");
+			Log.printErrorLn("Tileset: <" + name + "> is already a defined Tileset!", getClass().getName(), 1);
 		}
 	}
 	
@@ -42,7 +44,7 @@ public class TileSet {
 			imgWidth = texturePNG.getWidth();
 			imgHeight = texturePNG.getHeight();			
 		} catch (Exception e) {
-			System.err.println("Tileset: no File <" + filePath + ".png> found");
+			Log.printErrorLn("Tileset: no File <" + filePath + ".png> found", getClass().getName(), 1);
 		}
 		return loader.loadTexture(filePath);	
 	}
@@ -58,7 +60,7 @@ public class TileSet {
 			
 			if(imgWidth%(2*i)<1){
 				error = true;
-				System.err.println("Tileset: texturewidth should be 2^n (i.e. 1024");
+				Log.printErrorLn("Tileset: texturewidth should be 2^n (i.e. 1024)", getClass().getName(), 1);
 				break;
 			}
 			
@@ -71,13 +73,13 @@ public class TileSet {
 			
 			if(imgHeight%(2*i)<1){
 				error = true;
-				System.err.println("Tileset: textureheight should be 2^n (i.e. 1024");
+				Log.printErrorLn("Tileset: textureheight should be 2^n (i.e. 1024)", getClass().getName(), 1);
 				break;
 			}			
 		}
 		
 		if(imgWidth%tileWidth != 0 || imgHeight%tileHeight != 0){
-			System.err.println("Tileset: TextureHeight%TextureWidth should not be 0!");
+			Log.printErrorLn("Tileset: TextureHeight%TextureWidth should not be 0!", getClass().getName(), 1);
 			error = true;
 		}
 		
@@ -100,11 +102,11 @@ public class TileSet {
 	public float[] getTextureChords(float numInX, float numInY){
 		
 		if(tileWidth*numInX >= imgWidth){
-			System.err.println("Tileset: X: <" + numInX + "> is to big!");
+			Log.printErrorLn("Tileset: X: <" + numInX + "> is to big!", getClass().getName(), 1);
 		}
 		
 		if(tileHeight*numInY >= imgHeight){
-			System.err.println("Tileset: Y: <" + numInY + "> is to big!");
+			Log.printErrorLn("Tileset: Y: <" + numInY + "> is to big!", getClass().getName(), 1);
 		}
 		float width = ((float) tileWidth)/((float) imgWidth);
 		float height = ((float) tileHeight)/((float) imgHeight);

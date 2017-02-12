@@ -1,0 +1,6 @@
+Gametitle: Test Game
+fps: 60
+Width: 1024
+Height: 720
+1| [12:02:2017-02:17:50]: [  INFO:  ] com.saturn91.engine.Game: In IDE, load intern
+0| [12:02:2017-02:17:51]: [  INFO:  ] com.saturn91.engine.Engine$1: ticks: 62 longest delta: 18ms

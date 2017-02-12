@@ -14,6 +14,8 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import com.saturn91.engine.logger.Log;
+
 abstract class ShaderProgramm {
 	
 	protected int programmID;
@@ -128,7 +130,7 @@ abstract class ShaderProgramm {
 			}
 			reader.close();
 		} catch (Exception e) {
-			System.err.println("ShaderProgramm: Could not find File: <" + file + ">");
+			Log.printErrorLn("ShaderProgramm: Could not find File: <" + file + ">", ShaderProgramm.class.getName(), 1);
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -137,8 +139,8 @@ abstract class ShaderProgramm {
 		GL20.glShaderSource(shaderID, shaderSource);
 		GL20.glCompileShader(shaderID);
 		if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE){
-			System.out.println(GL20.glGetShaderInfoLog(shaderID, 500));
-			System.err.println("ShaderProgramm: Could not compile shader: <" + file + ">");
+			Log.printErrorLn(GL20.glGetShaderInfoLog(shaderID, 500), ShaderProgramm.class.getName(), 1);
+			Log.printErrorLn("ShaderProgramm: Could not compile shader: <" + file + ">", ShaderProgramm.class.getName(), 1);
 		}
 		return shaderID;
 	}
@@ -153,7 +155,7 @@ abstract class ShaderProgramm {
 			}
 			reader.close();
 		} catch (Exception e) {
-			System.err.println("ShaderProgramm: Could not find File: shaderFile!");
+			Log.printErrorLn("ShaderProgramm: Could not find File: shaderFile!", ShaderProgramm.class.getName(), 1);
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -162,8 +164,8 @@ abstract class ShaderProgramm {
 		GL20.glShaderSource(shaderID, shaderSource);
 		GL20.glCompileShader(shaderID);
 		if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE){
-			System.out.println(GL20.glGetShaderInfoLog(shaderID, 500));
-			System.err.println("ShaderProgramm: Could not find File: shaderFile!");
+			Log.printErrorLn(GL20.glGetShaderInfoLog(shaderID, 500), ShaderProgramm.class.getName(), 1);
+			Log.printErrorLn("ShaderProgramm: Could not find File: shaderFile!", ShaderProgramm.class.getName(), 1);
 		}
 		return shaderID;
 	}

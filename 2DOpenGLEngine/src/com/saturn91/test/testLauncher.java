@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import com.saturn91.engine.Engine;
+import com.saturn91.engine.SaveSystem;
 import com.saturn91.engine.gameObjects.GameObject;
 import com.saturn91.engine.gameObjects.Light;
 import com.saturn91.engine.gameObjects.TileSet;
@@ -15,10 +16,9 @@ public class testLauncher {
 
 	public static void main(String[] args) {
 		
-		Log.setDebugModus(1);
+		Log.setDebugModus(3);
 		
 		Engine engine = new Engine(1024, 720, "Test Game", 60){
-			
 			@Override
 			public void updateGame(long delta) {
 				update(this, delta);			

@@ -28,6 +28,8 @@ public abstract class Engine implements Runnable{
 	private static int fps = 60;
 	private static boolean fullscreen = false;
 	
+	private SaveSystem logPrinter;
+	
 	public void run() {
 		if(!fullscreen){
 			gameLoop = new GameMainLoop(windowWidth, windowHeight, windowTitle, fps){
@@ -38,11 +40,18 @@ public abstract class Engine implements Runnable{
 
 				@Override
 				public void init() {
+					logPrinter = new SaveSystem();
+					logPrinter.addBufferLine("Gametitle: " + windowTitle);
+					logPrinter.addBufferLine("fps: " + fps);
+					logPrinter.addBufferLine("Width: " + windowWidth);
+					logPrinter.addBufferLine("Height: " + windowHeight);
 					initGame();				
 				}
 
 				@Override
 				public void onClose() {
+					logPrinter.addToBuffer(Log.getDebugStrings().toString());
+					logPrinter.save(windowTitle + "_log.txt");
 					closeThread();				
 				}
 			};

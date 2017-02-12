@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import com.saturn91.engine.gameObjects.Light;
+import com.saturn91.engine.logger.Log;
 
 class StaticShader extends ShaderProgramm{
 	
@@ -83,7 +84,7 @@ class StaticShader extends ShaderProgramm{
 				setShaderVariablef("allLights[" + i + "].range", lights[i].getRange());
 			}
 		}else{
-			System.err.println("StaticShader: at the moment only 25 lights are allowed!");
+			Log.printErrorLn("StaticShader: at the moment only 25 lights are allowed!", StaticShader.class.getName(), 1);
 		}
 	}
 	
